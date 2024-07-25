@@ -1,1 +1,164 @@
-aa
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanamoto│カナー通貨で遊べる安心・安全のカジノ</title>
+    <style>
+        body {
+            background-color: #12202A;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .banner {
+            margin-top: 0px;
+        }
+        .banner img {
+            max-width: 100%;
+            height: auto;
+        }
+        .bet-section {
+            margin-top: 20px;
+        }
+        .bet-section img {
+            width: 100%;
+            height: auto;
+        }
+        .bet-buttons {
+            margin-top: 10px;
+        }
+        .bet-button {
+            font-size: 24px;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            color: black;
+            background-color: white;
+            margin: 0 10px;
+        }
+        #bet-details {
+            margin-top: 20px;
+            font-size: 20px;
+            text-align: left;
+            margin-left: 10%;
+        }
+        #bet-input {
+            margin-top: 10px;
+        }
+        #bet-input input {
+            width: 100px;
+            padding: 5px;
+            font-size: 18px;
+        }
+        .cards {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .card {
+            width: 100px;
+            height: 150px;
+            border: 1px solid white;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .card-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <img src="バナー.png" alt="Kanamoto Banner">
+    </div>
+    <div class="bet-section">
+        <img src="バカラ1.png" alt="Bet Background">
+        <div class="bet-buttons">
+            <button id="player-btn" class="bet-button" onclick="placeBet('player')">BET</button>
+            <button id="tie-btn" class="bet-button" onclick="placeBet('tie')">BET</button>
+            <button id="banker-btn" class="bet-button" onclick="placeBet('banker')">BET</button>
+        </div>
+    </div>
+    <div id="bet-details">
+        ベット：<span id="current-bet">0カナー</span><br>
+        残高：<span id="balance">5000カナー</span><br>
+        合計ベット：<span id="total-bet">0カナー</span><br>
+        勝ち金：<span id="winnings">0カナー</span>
+    </div>
+    <div id="bet-input">
+        ベット金額を入力: <input type="number" id="bet-amount" value="0">
+    </div>
+    <div class="cards">
+        <div class="card-section">
+            <div class="card" id="player-card-1"></div>
+            <div class="card" id="player-card-2"></div>
+            プレイヤー合計: <span id="player-total">0</span>
+        </div>
+        <div class="card-section">
+            <div class="card" id="banker-card-1"></div>
+            <div class="card" id="banker-card-2"></div>
+            バンカー合計: <span id="banker-total">0</span>
+        </div>
+    </div>
+    <script>
+        let balance = 5000;
+        let currentBet = 0;
+        let totalBet = 0;
+        let winnings = 0;
+
+        function placeBet(type) {
+            currentBet = parseInt(document.getElementById('bet-amount').value);
+            if (currentBet <= balance) {
+                balance -= currentBet;
+                totalBet += currentBet;
+
+                // プレイヤーとバンカーのカードを1つずつ出す
+                let playerCard1 = Math.floor(Math.random() * 9) + 1;
+                let playerCard2 = Math.floor(Math.random() * 9) + 1;
+                let bankerCard1 = Math.floor(Math.random() * 9) + 1;
+                let bankerCard2 = Math.floor(Math.random() * 9) + 1;
+
+                let playerTotal = (playerCard1 + playerCard2) % 10;
+                let bankerTotal = (bankerCard1 + bankerCard2) % 10;
+
+                document.getElementById('player-card-1').innerText = playerCard1;
+                document.getElementById('player-card-2').innerText = playerCard2;
+                document.getElementById('banker-card-1').innerText = bankerCard1;
+                document.getElementById('banker-card-2').innerText = bankerCard2;
+
+                document.getElementById('player-total').innerText = playerTotal;
+                document.getElementById('banker-total').innerText = bankerTotal;
+
+                if ((type === 'player' && playerTotal > bankerTotal) ||
+                    (type === 'banker' && bankerTotal > playerTotal) ||
+                    (type === 'tie' && playerTotal === bankerTotal)) {
+                    winnings = currentBet * (type === 'tie' ? 8 : 2);
+                    balance += winnings;
+                } else {
+                    winnings = 0;
+                }
+
+                updateDisplay();
+            } else {
+                alert('カス。アコムから借りてこい。');
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById('current-bet').innerText = currentBet + 'カナー';
+            document.getElementById('balance').innerText = balance + 'カナー';
+            document.getElementById('total-bet').innerText = totalBet + 'カナー';
+            document.getElementById('winnings').innerText = winnings + 'カナー';
+        }
+    </script>
+</body>
+</html>
+
